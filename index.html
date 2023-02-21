@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Weather API </title>
+</head>
+
+<body>
+    <form action="/" method="post">
+        <label for="city"> the city:</label>
+        <input type="text" name="city" id="city" placeholder="enter the city">
+
+        <label for="unit">Choose a unit:</label>
+        <input list="unit-types" name="unit" id="unit">
+
+        <datalist id="unit-types">
+            <option value="standard">
+            <option value="metric">
+            <option value="imperial">
+        </datalist>
+        <button type="submit">Go</button>
+    </form>
+</body>
+
+</html>

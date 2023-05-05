@@ -1,0 +1,121 @@
+@import url(https://fonts.googleapis.com/css?family=Poiret+One);
+@import url(https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.9/css/weather-icons.min.css);
+
+body {
+    background-color: #1D5C63;
+    font-family: Poiret One;
+}
+
+.container {
+    max-width: 960px;
+    margin-right: auto;
+    margin-left: auto;
+    padding-right: 15px;
+    padding-left: 15px;
+    min-height: 100vh;
+}
+
+.title {
+    padding-top: 5%;
+    padding-bottom: 3%;
+    color: white;
+    font-weight: 100;
+    font-weight: bold;
+
+}
+
+.widget {
+    margin: 5% auto;
+    top: 50%;
+    left: 50%;
+    height: 150px;
+    width: 300px;
+    flex-wrap: wrap;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+/* .cities-list {
+	display: grid;
+	grid-gap: 1rem;
+	grid-template-columns: repeat(
+		auto-fill,
+		minmax(250px, 1fr)
+	);
+} */
+
+.weatherIcon {
+    flex: 1 100%;
+    height: 60%;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    background: white;
+    font-family: weathericons;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    font-size: 40px;
+
+
+}
+
+.weatherIcon i {
+    padding-top: 10px;
+}
+
+.weatherInfo {
+    flex: 0 0 70%;
+    height: 40%;
+    background: #1A374D;
+    border-bottom-left-radius: 5px;
+    display: flex;
+    align-items: center;
+    color: white;
+
+}
+
+.temperature {
+    flex: 0 0 40%;
+    width: 100%;
+    font-size: 25px;
+    display: flex;
+    justify-content: space-around;
+}
+
+.description {
+    flex: 0 60%;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+
+
+
+}
+
+
+.description .weatherCondition {
+    text-transform: uppercase;
+    font-size: 15px;
+    font-weight: 100;
+}
+
+.description .weatherCondition .place {
+    font-size: 10px;
+    color: #EBB02D;
+}
+
+/* .date{
+            flex: 0 0 30%;
+            height: 40%;
+            background: #E86A33;
+            border-bottom-right-radius: 5px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            color: #F2E3DB;
+            font-size: 18px;
+            font-weight: 800;
+          }
+     */

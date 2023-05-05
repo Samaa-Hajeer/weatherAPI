@@ -9,18 +9,12 @@ var app = express();
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
+require("dotenv").config();
 
-///var city = "";var unit = "";
+var city = "";
 
+const API_ID=process.env.API_ID; 
 
-
-
-
-
-
-
-
-const id = "16d4843b79d7d82dc992e4df4851bcfe";
 var url = "";
 city = "london";
 unit = "standard";
@@ -32,13 +26,14 @@ app.get("/", function (req, res) {
 
 
 app.post("/", function (req, res) {
+console.log(req.body);
 
-    //////////////erja3elhom
-    // city = req.body.city;
+   var city = req.body.city_name;
     // unit = req.body.unitOption;
 
+    url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_ID}&units=${unit}`;
+    console.log(url);
 
-    url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${id}&units=${unit}`;
     https.get(url, function (response) {
 
         console.log(response.statusCode);
@@ -57,8 +52,7 @@ app.post("/", function (req, res) {
             // res.write("<img src=https://openweathermap.org/img/wn/" + icon + "@2x.png></img>");
 
             // res.send();
-
-            //////////////////////////////////  res.render("weather",{cityName:name ,temp:temp ,description:description,iconSrc:iconSrc});
+ res.render("weather",{cityName:name ,temp:temp ,description:description,iconSrc:iconSrc});
 
         })
     })

@@ -3,6 +3,7 @@
 const express = require("express");
 const https = require("https");
 const bodyParser = require("body-parser");
+const mongoose = require("mongoose");
 
 var app = express();
 
@@ -11,55 +12,75 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 require("dotenv").config();
 
-var city = "";
+const API_ID = process.env.API_ID;
+const DB_URL = process.env.DB_URL;
 
-const API_ID=process.env.API_ID; 
+const connectionParams = {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+};
 
-var url = "";
-city = "london";
-unit = "standard";
-
-
-app.get("/", function (req, res) {
-    res.render("weather", { cityName: city, temp: "temp", description: "description", iconSrc: "iconSrc" });
-});
-
-
-app.post("/", function (req, res) {
-console.log(req.body);
-
-   var city = req.body.city_name;
-    // unit = req.body.unitOption;
-
-    url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_ID}&units=${unit}`;
-    console.log(url);
-
-    https.get(url, function (response) {
-
-        console.log(response.statusCode);
-        response.on('data', function (data) {
-
-            var weatherData = JSON.parse(data);
-
-            var temp = weatherData.main.temp;
-            var description = weatherData.weather[0].description;
-            var name = weatherData.name;
-            var icon = weatherData.weather[0].icon;
-            var iconSrc = "https://openweathermap.org/img/wn/" + icon + "@2x.png";
-            // res.write("<h1>" + name + "</h1>");
-            // res.write("The tempteture is :" + temp);
-            // res.write(" and description:" + description);
-            // res.write("<img src=https://openweathermap.org/img/wn/" + icon + "@2x.png></img>");
-
-            // res.send();
- res.render("weather",{cityName:name ,temp:temp ,description:description,iconSrc:iconSrc});
-
-        })
+mongoose.connect(DB_URL, connectionParams)
+    .then(() => {
+        console.log("Connection is  Done");
+    })
+    .catch((e) => {
+        console.log("ERROR " + e);
     })
 
+var citySchema = mongoose.Schema({
+    name: String,
+    addTime:Date
+});
+
+var cityModel = mongoose.model("City", citySchema);
+var city = "";
+var url = "";
+unit = "metric";
+var citiesToShow
+app.get("/", async function (req, res) {
+
+    var dbCities = await cityModel.find({}).sort({addTime:-1}).exec();
+    getWeather(dbCities).then(
+        (openWeatherCities) => {
+            var citiesToShow = { citiesToShow: openWeatherCities };
+            res.render("weather", citiesToShow);
+
+        })
+});
+
+
+app.post("/", async function (req, res) {
+
+var query={name: req.body.city_name};
+var update={addTime:new Date() }
+var options={new:true ,upsert: true}
+await cityModel.findOneAndUpdate(query,update,options)
+
+    res.redirect("/");
 
 });
 
+async function getWeather(dbCities) {
+
+    var openWeatherCities = [];
+    for (dbCity of dbCities) {
+
+        url = `https://api.openweathermap.org/data/2.5/weather?q=${dbCity.name}&appid=${API_ID}&units=${unit}`;
+        const response = await fetch(url)
+        var weatherData = await response.json();
+        var cityDetails = {
+            temp: weatherData.main.temp,
+            description: weatherData.weather[0].description,
+            name: weatherData.name,
+            icon: weatherData.weather[0].icon,
+        }
+        openWeatherCities.push(cityDetails);
+
+
+    }
+    return (openWeatherCities);
+}
 app.listen("5000", function () {
     console.log("the server is starting on port 5000");
 });

@@ -18,30 +18,32 @@
     <nav class="navbar navbar-light">
       <div class="container-fluid">
         <form class="input-group" action="/" method="post">
-          <input type="search" class="form-control fw-bold" id="city_name" name="city_name"placeholder="City Name ..">
+          <input type="search" class="form-control fw-bold" id="city_name" name="city_name" placeholder="City Name ..">
           <button type="submit" class="btn fw-bold text-body btn-warning"> Search </button>
         </form>
       </div>
-    </nav>
-    <article class="widget ">
-      <div class="weatherIcon"><i class="wi wi-day-cloudy"></i></div>
-      <div class="weatherInfo">
-        <div class="temperature"><span>
-            <%=temp%>&deg;
-          </span></div>
-        <div class="description">
-          <div class="weatherCondition">
-            <%=description%>
-          </div>
-          <div class="place">
-            <%=cityName%>
+    </nav>   
+    <% for(city of citiesToShow){%>
+      
+      <article class="widget ">
+        <div class="weatherIcon"><img src="https://openweathermap.org/img/wn/<%= city.icon %>@2x.png" alt="Image">
+          </i></div>
+        <div class="weatherInfo">
+          <div class="temperature" ><span>
+              <%=city.temp%>&deg;
+            </span></div>
+          <div class="description">
+            <div class="weatherCondition">
+              <%=city.description%>
+            </div>
+            <div class="place" >
+              <%=city.name%>
+            </div>
           </div>
         </div>
-      </div>
 
-      <!-- <div class="date">1st Jan</div> -->
-    </article>
-
+      </article>
+      <% }%>
   </div>
 
 
